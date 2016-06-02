@@ -4,10 +4,6 @@
 #include "structures.h"
 #include <stdio.h>
 
-#define LINE_LENGTH 256
-
-int calculatesAmountNumbers(FILE *file);
-
-int splitNumbersInFiles(FILE *file, int amountPcs, pc *computers);
+int findTarget(int target, pc *computer);
 
 #endif

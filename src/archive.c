@@ -4,51 +4,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-int calculatesAmountNumbers(FILE *file){
-  int amount;
+int findTarget(int target, pc *computer){
+  FILE *file;
   int num;
 
-  amount = 0;
+  file = NULL;
   num = 0;
 
-  fseek(file, 0, SEEK_SET);
+  file = fopen(computer->file_name, "r");
+  if(!file) return 0;
 
   while(fscanf(file, " %d\n", &num) != EOF){
-    amount++;
-  }
-
-  return amount;
-}
-
-int splitNumbersInFiles(FILE *file, int amountPcs, pc *computers){
-  FILE *new;
-  int position;
-  int counter;
-  int num;
-
-  position = 0;
-  num = 0;
-
-  fseek(file, 0, SEEK_SET);
-
-  for(position = 0; position < amountPcs; position++){
-    new = NULL;
-    counter = 0;
-    memset(computers[position].file_name, 0, 10);
-    snprintf(computers[position].file_name, 10, "PC%02d.data", position);
-    new = fopen(computers[position].file_name, "w");
-    if(new == NULL) goto ERROR;
-
-    for(counter = 0; counter < computers[position].amount; counter++){
-      fscanf(file, " %d\n", &num);
-      fprintf(new, "%d\n", num);
+    computer->amountNumbers++;
+    if(num == target){
+      computer->amountFound++;
+      computer->founds = (int*) realloc(computer->founds, computer->amountFound * sizeof(int));
+      computer->founds[computer->amountFound - 1] = computer->amountNumbers;
     }
-
-    fclose(new);
   }
 
+  fclose(file);
   return 1;
-
-  ERROR:
-    return 0;
 }

@@ -4,6 +4,7 @@
 #include "structures.h"
 #include <stdio.h>
 
-int findTarget(int target, pc *computer);
+short getContent(char file_name[], char **content);
+short savePositions(int *positions, int amount, int startIndex);
 
 #endif

@@ -4,25 +4,41 @@
 #include <stdlib.h>
 #include <string.h>
 
-int findTarget(int target, pc *computer){
+short getContent(char file_name[], char **content){
+  unsigned size;
   FILE *file;
-  int num;
 
   file = NULL;
-  num = 0;
 
-  file = fopen(computer->file_name, "r");
+  file = fopen(file_name, "r");
   if(!file) return 0;
 
-  while(fscanf(file, " %d\n", &num) != EOF){
-    computer->amountNumbers++;
-    if(num == target){
-      computer->amountFound++;
-      computer->founds = (int*) realloc(computer->founds, computer->amountFound * sizeof(int));
-      computer->founds[computer->amountFound - 1] = computer->amountNumbers;
-    }
+  fseek(file, 0, SEEK_END);
+  size = ftell(file);
+  fseek(file, 0, SEEK_SET);
+  *content = (char*) calloc(sizeof(char), size);
+  if(!*content) return 0;
+
+  fread(*content, sizeof(char), size, file);
+
+  fclose(file);
+
+  return 1;
+}
+
+short savePositions(int *positions, int amount, int startIndex){
+  int counter;
+  FILE *file;
+
+  file = NULL;
+  file = fopen("result.data", "a");
+  if(!file) return 0;
+
+  for(counter = 0; counter < amount; counter++){
+    fprintf(file, "%d\n", startIndex + positions[counter]);
   }
 
   fclose(file);
+
   return 1;
 }

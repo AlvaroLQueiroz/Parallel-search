@@ -3,7 +3,6 @@
 
 typedef struct machine{
   int rank;
-  char file_name[10];
   int amountNumbers;
   int amountFound;
   int *founds;

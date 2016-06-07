@@ -30,3 +30,7 @@
 
 # Debug files
 *.dSYM/
+
+busca_paralela
+dados.dat
+result.data

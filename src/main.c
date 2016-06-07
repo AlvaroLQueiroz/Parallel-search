@@ -15,6 +15,7 @@ int main(int argc, char **argv){
   int counter;
   int rank;
   int target;
+  int totalFound;
 
   char *content;
   int *founds;
@@ -33,6 +34,7 @@ int main(int argc, char **argv){
     counter = 0;
     rank = 0;
     target = 0;
+    totalFound = 0;
 
     content = NULL;
     founds = NULL;
@@ -62,18 +64,21 @@ int main(int argc, char **argv){
           }else{
             goto ERROR;
           }
+          totalFound += amountFound;
 
           // Receive founds in other ranks and save.
           for(counter = 1; counter < amountPcs; counter++){
             amountFound = 0;
             free(founds);
             MPI_Recv(&amountFound, 1, MPI_INT, counter, 0, MPI_COMM_WORLD, &status);
+            totalFound += amountFound;
             founds = (int*) calloc(amountFound, sizeof(int));
             if(!founds) goto ERROR;
             MPI_Recv(founds, amountFound, MPI_INT, counter, 0, MPI_COMM_WORLD, &status);
             if(!savePositions(founds, amountFound, amountForFirst + (counter * amountPerPC))) goto ERROR;
             printf("Rank %d found %d\n", status.MPI_SOURCE, amountFound);
           }
+          printf("Total found: %d\n", totalFound);
         }else{
           goto ERROR;
         }

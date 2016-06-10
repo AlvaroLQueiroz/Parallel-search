@@ -1,27 +1,37 @@
-#Compilador
+# Compiler
 CC = mpicc
+
+# Executable name
 NAME = busca_paralela
 
-#Variaveis de diretorios
+# Directory of Libraries
 LIB = ./lib
+
+# Directory of headers
 INCLUDE = ./include
+
+# Directory of source codes
 SRC = ./src
+
+# Directory of compileds
 OBJ = ./obj
 
-#Opcões de compilação
+# Flag of librarie
 LIBFLAGS = -l$(NAME)
+
+# Other flags
 FLAGS = -Wall -Wextra -pedantic -g
 
-limpeza: principal
+clean: main
 	@rm lib/*.a
 	@rm obj/*.o
 
 #Cria um biblioteca dinamica com as bibliotecas
-principal: biblioteca
+main: libraries
 	@$(CC) $(SRC)/main.c $(FLAGS) -I$(INCLUDE) -L$(LIB) $(LIBFLAGS) -o $(NAME)
 
-#Compila as bibliotecas
-biblioteca:
+# Compile the libraries
+libraries:
 	@$(CC) -c $(SRC)/*.c $(FLAGS) -I$(INCLUDE)
-	@mv *.o obj/
+	@mv *.o $(OBJ)
 	@ar -cr $(LIB)/lib$(NAME).a $(OBJ)/*.o

@@ -1,25 +1,23 @@
-#!/bin/bash
+EXEC_NAME="busca_paralela"
 
-
-amountPcs=$1
-fileName=$2
-
-echo "Counting numbers..."
-amountNumbers=$(wc -l < $fileName)
-echo "There are $amountNumbers numbers in the file."
-echo
-
-echo "Separating the numbers in files..."
-split -d -n r/$amountPcs $fileName PC
-echo "Separated in $amountPcs files"
-echo
-
-echo "Compiling the program..."
+echo "Compiling..."
 make
-echo "Compiled"
-echo
 
-echo "Sending files to other machines"
-# TODO
-echo "Completed"
-echo
+echo "Giving permission..."
+chmod +x $EXEC_NAME
+
+count=0
+
+while read ip; do
+  if test $count != 0
+   then
+    echo "Synchronizing files from $ip..."
+    rsync -aq $EXEC_NAME $ip:`pwd`
+  fi
+  count=$count+1
+done < hosts
+
+echo "Raising network..."
+lamboot hosts
+
+echo "Configuration finalized."

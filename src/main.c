@@ -57,7 +57,7 @@ int main(int argc, char **argv){
             MPI_Send(numbers[counter], amountPerPC, MPI_INT, counter, 0, MPI_COMM_WORLD);
           }
 
-          /* Search and save in rank 0 */
+          /* Search and save in node 0 */
           if(searchNumber(numbers[0], amountForFirst, target, &founds, &amountFound)){
             if(!savePositions(founds, amountFound, 0)) goto ERROR;
             printf("Rank %d found %d\n", rank, amountFound);
@@ -66,7 +66,7 @@ int main(int argc, char **argv){
           }
           totalFound += amountFound;
 
-          /* Receive founds in other ranks and save. */
+          /* Receive founds in other nodes and save. */
           for(counter = 1; counter < amountPcs; counter++){
             amountFound = 0;
             free(founds);

@@ -5,8 +5,5 @@ Configuring
 
 Running
 
-To execute the program in one machine, run:
-$ sh local_run.sh <amount of nodes> <input_file> <target>
-
 To execute the program in a cluster, run
 $ sh remote_run.sh <amount of nodes> <input_file> <target>

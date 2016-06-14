@@ -16,7 +16,7 @@ unsigned splitNumbers(char *content, int amountPcs, int *amountForFirst, int *am
   pointer = NULL;
   string = NULL;
 
-  /* Count amount of numbers */
+  /* count amount of numbers reads from input file */
   string = content;
   pointer = strpbrk(string, "\n");
   while(pointer != NULL){
@@ -27,16 +27,16 @@ unsigned splitNumbers(char *content, int amountPcs, int *amountForFirst, int *am
   *amountForFirst = (amountNumbers / amountPcs) + (amountNumbers % amountPcs);
   *amountPerPC = amountNumbers / amountPcs;
 
-  /* Allocates a vector length equal amount of PC */
+  /* Allocates an matrix with a number of lines equal to the number of nodes in the cluster */
   *numbers = (int**) calloc(amountPcs, sizeof(int*));
   if(*numbers == NULL) return 0;
 
-  /* Allocates an vector for the first pc */
+  /* Allocates an array for the numbers of the first PC */
   (*numbers)[0] = NULL;
   (*numbers)[0] = (int*) calloc(*amountForFirst, sizeof(int));
   if((*numbers)[0] == NULL) return 0;
 
-  /* Allocates a vector for each of the other PC */
+  /* Allocates an array for each of the others PC's */
   for(counter = 1; counter < amountPcs; counter++){
     (*numbers)[counter] = NULL;
     (*numbers)[counter] = (int*) calloc(*amountPerPC, sizeof(int));
@@ -47,7 +47,7 @@ unsigned splitNumbers(char *content, int amountPcs, int *amountForFirst, int *am
   pointer = strtok(string, "\n");
 
   /* Copy the numbers for first PC */
-  while(pointer != NULL && counter < *amountForFirst){
+  while(pointer != NULL && counter <= *amountForFirst){
     (*numbers)[0][counter] = atoi(pointer);
     pointer = strtok(NULL, "\n");
     counter++;

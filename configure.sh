@@ -8,11 +8,12 @@ chmod +x $EXEC_NAME
 
 count=0
 
+# Send new executable for all nodes in the cluster.
 while read ip; do
   if test $count != 0
    then
     echo "Synchronizing files from $ip..."
-    rsync -aq $EXEC_NAME $ip:`pwd`
+    rsync -aqp --rsync-path="mkdir -p `pwd` && rsync" $EXEC_NAME $ip:`pwd`
   fi
   count=$count+1
 done < hosts
